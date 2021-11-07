@@ -1,15 +1,17 @@
 StrongHelp Manuals
 ==================
 
-This project contains the source files for StrongHelp manuals [hosted on riscos.info](http://www.riscos.info/downloads/stronghelp/manuals/).
+This project contains the core build resources for StrongHelp manuals [hosted on riscos.info](http://www.riscos.info/downloads/stronghelp/manuals/).
 
 The source files can be assembled in a Linux environment using the BindHelp tool from [OSLib](https://ro-oslib.sourceforge.io/) and the Zip tool from the GCCSDK.
+
+The manual sources themselves are stored in external repositories, linked into the `src/` folder as submodules.
 
 
 Conventions
 -----------
 
-The source files are stored within the `src/` folder, in sub-folders which match the names of the completed StrongHelp manuals.
+The source files are stored within external repositories, linked within the `src/` folder as submoduled.Each repository contains sub-folders which match the names of the completed StrongHelp manuals, and a simple Makefile which identifies them and then calls MakeCollection.
 
 Filenames contain the same characters as used in the finished manual, except that `/` in a RISC OS filename is mapped to `.`. Filetypes should always be explicitly included on the ends of filenames using the conventional `,xxx` extension format -- for example `!Root,fff` or `!Root,ffd`. The names of directories appear in exactly the same format as the finished manual, and have no trailing filetype specifier.
 
