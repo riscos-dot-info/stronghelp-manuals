@@ -93,8 +93,8 @@ $(PARENT)$(OUTDIR):
 
 $(PARENT)$(OUTDIR)/%$(ZIPTYPE): $(PARENT)$(BUILDDIR)/%$(STRONGHELPTYPE)
 	@$(call show-stage,ZIPPING,$(<))
-	$(RM) $(@)
-	$(CD) $(PARENT)$(BUILDDIR) ; $(ZIP) $(ZIPFLAGS) ../$(OUTDIR)/$(@F) $(<F)
+	@$(RM) $(@)
+	@$(CD) $(PARENT)$(BUILDDIR) ; $(ZIP) $(ZIPFLAGS) ../$(OUTDIR)/$(@F) $(<F)
 
 # Clean targets
 
