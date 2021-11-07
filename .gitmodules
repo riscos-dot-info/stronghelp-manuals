@@ -1,0 +1,36 @@
+[submodule "src/reference-inetsocket"]
+	path = src/reference-inetsocket
+	url = https://github.com/riscos-dot-info/stronghelp-reference-inetsocket.git
+	branch = main
+[submodule "src/reference-inetswis"]
+	path = src/reference-inetswis
+	url = https://github.com/riscos-dot-info/stronghelp-reference-inetswis.git
+	branch = main
+[submodule "src/reference-miscswis"]
+	path = src/reference-miscswis
+	url = https://github.com/riscos-dot-info/stronghelp-reference-miscswis.git
+	branch = main
+[submodule "src/reference-os"]
+	path = src/reference-os
+	url = https://github.com/riscos-dot-info/stronghelp-reference-os.git
+	branch = main
+[submodule "src/reference-vdu"]
+	path = src/reference-vdu
+	url = https://github.com/riscos-dot-info/stronghelp-reference-vdu.git
+	branch = main
+[submodule "src/reference-wimp"]
+	path = src/reference-wimp
+	url = https://github.com/riscos-dot-info/stronghelp-reference-wimp.git
+	branch = main
+[submodule "src/sh-refman"]
+	path = src/sh-refman
+	url = https://github.com/riscos-dot-info/stronghelp-sh-refman.git
+	branch = main
+[submodule "src/sh-style"]
+	path = src/sh-style
+	url = https://github.com/riscos-dot-info/stronghelp-sh-style.git
+	branch = main
+[submodule "src/toolbox"]
+	path = src/toolbox
+	url = https://github.com/riscos-dot-info/stronghelp-toolbox.git
+	branch = main

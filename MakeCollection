@@ -1,0 +1,105 @@
+# Copyright 2021, Stephen Fryatt (info@stevefryatt.org.uk)
+#
+# This file is part of the StrongHelp Manuals:
+#
+#   https://github.com/riscos-dot-info/stronghelp-manuals
+
+# This file really needs to be run by GNUMake. It is intended for use on
+# Linux, to assemble the manuals using the BindHelp utility.
+#
+# Ensure that the build tools all point to valid executables, in
+# particular @(BINDHELP) and @(ZIP). The latter must be aware of
+# RISC OS filetypes and recognise ,xxx filename extensions -- such as
+# the version supplied in the GCCSDK cross compiler environment.
+
+.PHONY: clean manuals release
+
+# The manuals included in the build.
+
+MANUALS ?=
+
+# The filename suffixes for StrongHelp and Zip files.
+
+STRONGHELPTYPE := ,3d6
+ZIPTYPE = .zip
+
+# Set up the various build directories.
+
+PARENT := ../../
+BUILDDIR := build
+OUTDIR := out
+
+# Build Tools
+
+ECHO := echo
+PRINTF := printf
+MKDIR := mkdir -p
+CD := cd
+RM := rm -f
+BINDHELP := bindhelp
+ZIP := $(GCCSDK_INSTALL_ENV)/bin/zip
+
+# Build Flags
+
+BINDHELPFLAGS := -f -r -m
+ZIPFLAGS := -x "*/.svn/*" -r -, -9
+
+# Set up escape sequences for colouring terminal output.
+
+COLOUR_ACTION := \033[1;32m
+COLOUR_END := \033[0m
+
+# Provide a means of reporting progress.
+
+show-stage = $(PRINTF) "$(COLOUR_ACTION)*%18s: %s$(COLOUR_END)\n" "$(1)" "$(2)"
+
+# Inform the user what we're about to do.
+
+$(info *** Building StrongHelp Manual Collection ***)
+
+# Build the manuals.
+
+MANUALFILES := $(addsuffix $(STRONGHELPTYPE), $(MANUALS))
+MANUALFILES := $(addprefix $(PARENT)$(BUILDDIR)/, $(MANUALFILES))
+
+manuals: $(PARENT)$(BUILDDIR) $(MANUALFILES)
+
+# Ensure that there's a build folder.
+
+$(PARENT)$(BUILDDIR):
+	@$(call show-stage,MKDIR,$(BUILDDIR))
+	@$(MKDIR) $(PARENT)$(BUILDDIR)
+
+# Assemble the StrongHelp files.
+
+$(PARENT)$(BUILDDIR)/%$(STRONGHELPTYPE): %
+	@$(call show-stage,BINDING,$(<))
+	@$(BINDHELP) $(<) $(@) $(BINDHELPFLAGS)
+
+# Build the manuals and package them for release.
+
+ZIPFILES := $(addsuffix $(ZIPTYPE), $(MANUALS))
+ZIPFILES := $(addprefix $(PARENT)$(OUTDIR)/, $(ZIPFILES))
+
+release: clean manuals $(PARENT)$(OUTDIR) $(ZIPFILES)
+
+# Ensure that there's an output folder.
+
+$(PARENT)$(OUTDIR):
+	@$(call show-stage,MKDIR,$(OUTDIR))
+	@$(MKDIR) $(PARENT)$(OUTDIR)
+
+# Zip up the StrongHelp files.
+
+$(PARENT)$(OUTDIR)/%$(ZIPTYPE): $(PARENT)$(BUILDDIR)/%$(STRONGHELPTYPE)
+	@$(call show-stage,ZIPPING,$(<))
+	$(RM) $(@)
+	$(CD) $(PARENT)$(BUILDDIR) ; $(ZIP) $(ZIPFLAGS) ../$(OUTDIR)/$(@F) $(<F)
+
+# Clean targets
+
+clean::
+	@$(call show-stage,CLEANING,$(BUILDDIR))
+	@$(foreach TARGET,$(MANUALFILES),$(RM) "$(TARGET)";)
+	@$(call show-stage,CLEANING,$(OUTDIR))
+	@$(foreach TARGET,$(ZIPFILES),$(RM) "$(TARGET)";)
